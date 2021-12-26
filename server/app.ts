@@ -18,7 +18,7 @@ app.get('/', async (req: express.Request, res: express.Response) => {
     const db = client.db('allprojects');
     const collection = db.collection('users');
     const users = await collection.find({}).toArray();
-    res.status(200).send('test auto deploy ' + JSON.stringify(users));
+    res.status(200).send('Test auto deploy ' + JSON.stringify(users));
     client.close();
 });
 
