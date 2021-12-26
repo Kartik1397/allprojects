@@ -36,3 +36,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      - name: Deploy on azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'allprojects'
+          publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+          images: 'ktkpjpt/allprojects:main'
