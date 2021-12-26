@@ -1,9 +1,5 @@
 import {Schema,model} from "mongoose"
-
 import {user} from "../Interfaces/user"
-
-
-
 const UserSchema = new Schema<Partial<user>>(
   {
      uname:{
@@ -31,7 +27,6 @@ const UserSchema = new Schema<Partial<user>>(
      created_At:{
        type:Date
      }
-   
 
   }
 );
