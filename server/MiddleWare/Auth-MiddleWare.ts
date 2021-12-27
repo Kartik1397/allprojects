@@ -2,7 +2,6 @@ import {NextFunction, Request,Response} from 'express';
 const jwt = require("jsonwebtoken");
 import { IncomingHttpHeaders } from 'http';
 interface CustomRequest extends Request {
-  myAwesomeProperty?: number
   headers           : IncomingHttpHeaders & {
     customHeader?: string
   }
