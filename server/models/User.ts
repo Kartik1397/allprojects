@@ -5,6 +5,7 @@ import {IUser} from '../Interfaces/user'
 
 
 const UserSchema = new Schema(
+
   {
      uname:{
        type:String,
@@ -36,7 +37,6 @@ const UserSchema = new Schema(
        type:Number,
        default:Date.now()
      }
-   
 
   }
 );
