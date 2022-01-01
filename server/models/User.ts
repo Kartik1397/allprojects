@@ -1,22 +1,31 @@
-import {Schema,model} from "mongoose"
-import {user} from "../Interfaces/user"
-const UserSchema = new Schema<Partial<user>>(
+import {Schema,model, Model} from "mongoose"
+
+import {IUser} from '../Interfaces/user'
+
+
+
+const UserSchema = new Schema(
+
   {
      uname:{
        type:String,
        required:true,
      },
-     firstname:{
-       type:String,
-       required:true,
-     },
-     lastname:{
+     email:{
        type:String,
        required:true
      },
+     firstname:{
+       type:String,
+       required:false,
+     },
+     lastname:{
+       type:String,
+       required:false
+     },
      find_me:{
         type:Object,
-        required:true
+        required:false
      },
      project_Ids:{
        type:Array
@@ -25,10 +34,11 @@ const UserSchema = new Schema<Partial<user>>(
         type:Array
      },
      created_At:{
-       type:Date
+       type:Number,
+       default:Date.now()
      }
 
   }
 );
 
-module.exports = model("users", UserSchema);
+export = model<IUser>("users", UserSchema);
