@@ -1,0 +1,10 @@
+.SearchInput input {
+    background-color: var(--gray-0);
+    width: var(--size-content-3);
+    font-size: var(--font-size-3);
+    padding: var(--size-2) var(--size-3);
+    color: var(--gray-7);
+    outline: none;
+    border: none;
+    border-radius: var(--size-2);
+}
