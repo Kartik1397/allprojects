@@ -1,0 +1,12 @@
+.SignIn {
+    font-size: var(--font-size-1);
+}
+
+.SignIn .Button {
+    cursor: pointer;
+    font-weight: var(--font-weight-6)
+}
+
+.SignIn .Button:hover {
+    color: var(--gray-7);
+}

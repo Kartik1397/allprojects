@@ -1,0 +1,6 @@
+.header {
+    padding: var(--size-3) var(--size-10);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
