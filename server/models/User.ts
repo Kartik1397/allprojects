@@ -17,15 +17,15 @@ const UserSchema = new Schema(
      },
      firstname:{
        type:String,
-       required:true,
+       required:false,
      },
      lastname:{
        type:String,
-       required:true
+       required:false
      },
      find_me:{
         type:Object,
-        required:true
+        required:false
      },
      project_Ids:{
        type:Array

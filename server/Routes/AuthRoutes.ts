@@ -1,7 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import  session from 'express-session'
 import {  OAuth2Client } from 'google-auth-library';
 
 const client = new OAuth2Client(process.env.CLIENT_ID)
@@ -21,11 +20,6 @@ declare global {
     }
   }
 }
-
-
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 *60 *12*3}}))
-
-
 
 app.use(async (req:express.Request, res:express.Response, next:express.NextFunction) => {
   try{
@@ -53,9 +47,9 @@ app.delete("/api/v1/auth/logout",async (req, res) => {
 //login
 app.post('/api/google',async (req: express.Request, res: express.Response)=>{
   try{
-    const { token }  = req.body
+    const { credential }  = req.body
     const ticket = await client.verifyIdToken({
-        idToken: token,
+        idToken: credential,
         audience: process.env.CLIENT_ID
     })
     const obj:any = ticket.getPayload();    
@@ -64,12 +58,14 @@ app.post('/api/google',async (req: express.Request, res: express.Response)=>{
       email:obj.email
     });
     const user =await User.create(newUser);
-    req.session.id = user.id;
-    res.status(201);
-    res.json(user);
-  }catch(e){
+    req.session.user = user;
+    res.status(302);
+    res.redirect('https://allprojects.ml/');
+  } catch(e) {
     res.status(400);
-    res.json({msg:"failed to auth the user"});
+    if (e instanceof Error) {
+      res.json({msg:"failed to auth the user", error:e.message});
+    }
   }
 
 })
