@@ -1,5 +1,5 @@
 import {Schema,model} from "mongoose"
-import {tag} from "../Interfaces/tag";
+import tag from "../Interfaces/tag";
 
 const TagSchema = new Schema<Partial<tag>>(
   {
@@ -15,4 +15,4 @@ const TagSchema = new Schema<Partial<tag>>(
   }
 );
 
-module.exports = model("tags", TagSchema);
+export default model("tags", TagSchema);

@@ -2,6 +2,7 @@ import express from 'express';
 import User from "../models/User";
 import Project from "../models/Project";
 import Tag from "../models/tag";
+import Auth from '../MiddleWare/Auth-MiddleWare';
 const app: express.Application = express();
 
 
@@ -27,8 +28,8 @@ app.post('/tagsbyproject',async (req: express.Request, res: express.Response) =>
  * Add Custom Tag for Project
  * dev: Check for SESSION
  */
-app.post('/addtagforproject',async (req: express.Request, res: express.Response) => {
-  
+app.post('/addtagforproject',Auth,async (req: express.Request, res: express.Response) => {
+  console.log(req.session.user);
   //requirement :ProjectId,tagName ,Color and Session of User 
   const {projectId,tagName,color} = req?.body;
 

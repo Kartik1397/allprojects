@@ -3,4 +3,4 @@ interface tag{
   color:String,
   Projects:Array<String>
 }
-export {tag}
+export default tag

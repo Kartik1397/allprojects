@@ -18,6 +18,7 @@ import fs from 'fs'
 //route Imports
 import userRoutes from './Routes/UserRoutes';
 import authRoutes from './Routes/AuthRoutes';
+import Auth from './MiddleWare/Auth-MiddleWare';
 
 // PRIVATE and PUBLIC key
 var privateKEY  = fs.readFileSync('./keys/private.key', 'utf8');
@@ -27,8 +28,8 @@ const app: express.Application = express();
 const server: http.Server = http.createServer(app);
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 *60 *12*3 }}))
+// app.use(cookieParser());
+
 
 declare var process : {
     env: {
@@ -36,7 +37,7 @@ declare var process : {
       PORT:number,
     }
   }
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3001;
 
 
 
@@ -49,14 +50,19 @@ InitiateMongoServer();
 app.use(express.json());
 app.use(cors());
   //cross origin resource sharing :Set middleware
-app.use(cors({origin: "https://allprojects.ml"}))
-
+app.use(cors({
+  origin: "http://localhost:3000",
+   credentials:true}))
+   app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 *60 *12*3 ,path:'/'}}))
 app.use('/user',userRoutes);
 app.use('/auth',authRoutes);
-app.get('/',(req: express.Request, res: express.Response)=>{
-  console.log(req.session.user);
+
+app.get('/',Auth,(req: express.Request, res: express.Response)=>{
+  // console.log(req.session.user);
+  // console.log(req.session);
   res.status(200).send("server is under development ...");
 })
+
 
 server.listen(port, () => {
     console.log('Server started at ' + port);
