@@ -10,7 +10,7 @@ const SignIn:FC = () => {
             {!state.isAuthenticated && <div id="g_id_onload"
      data-client_id="496941184973-m0q8g3uns4uo9lgll6r9mq4jfh703a6j.apps.googleusercontent.com"
      data-context="signin"
-     data-login_uri="http://localhost:4000/auth/api/google"></div>}
+     data-login_uri={`${process.env.REACT_APP_API_URL}/auth/api/google`}></div>}
         </div>
     );
 }

@@ -28,7 +28,7 @@ declare var process: {
   }
 }
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 80;
 
 //Config for Environment variables
 dotenv.config();
