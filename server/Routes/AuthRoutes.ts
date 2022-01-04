@@ -40,17 +40,27 @@ declare global {
 // })
 //get me 
 router.get("/me", Auth, function (req: express.Request, res: express.Response) {
+  console.log(req.user);
+  console.log("Hi");
   res.status(200);
-  res.json({ msg: "success", user: req.user });
+  res.json({ msg: "success", user: req.user,isAuthenticated:true });
 })
 
 //logout
-router.delete("/api/v1/auth/logout", Auth, async function (req, res) {
-  req.session.destroy(() => {
-    res.json({
-      message: "Logged out successfully"
+router.delete("/api/v1/logout", async function (req, res) {
+  console.log("In logout",req.cookies);
+  try{
+    req.session.destroy(() => {
+      res.status(201);
+      res.json({
+        message: "Logged out successfully",isAuthenticated:false
+      });
     });
-  });
+  }
+  catch(e){
+    res.json({message:"couldn't log out",isAuthenticated:true});
+  }
+ 
 })
 
 //login

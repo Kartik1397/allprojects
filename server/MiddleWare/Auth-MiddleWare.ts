@@ -8,6 +8,9 @@ const Auth = async (req: express.Request, res: express.Response, next: express.N
     if (typeof req.session.user !== "undefined" || req.session.user === true) {
       req.user = req.session.user;
     }
+    else{
+      throw "Authentication failed";
+    }
     next();
   }
   catch (e) {

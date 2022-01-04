@@ -28,7 +28,7 @@ declare var process: {
   }
 }
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 4000;
 
 //Config for Environment variables
 dotenv.config();
@@ -45,7 +45,7 @@ app.use(cors({
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 * 60 * 12 * 3, path: '/' } }))
 app.use('/user', userRoutes);
 app.use('/auth', authRoutes);
-app.get('/', Auth, (req: express.Request, res: express.Response) => {
+app.get('/', (req: express.Request, res: express.Response) => {
   res.status(200).send("server is under development ...");
 })
 
