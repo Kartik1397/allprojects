@@ -1,11 +1,14 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import HomePage from '../pages/Home';
+import Home from '../pages/Home';
+import DashBoard from '../pages/DashBoard';
 
 const AppRoutes:FC = () => {
+    
     return (
         <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/dashboard" element={<DashBoard/>} />
+            <Route path="/" element={<DashBoard/>}/>
         </Routes>
     );
 }

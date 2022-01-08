@@ -1,5 +1,5 @@
 import {Schema,model} from "mongoose"
-import {project} from "../Interfaces/Project"
+import project from "../Interfaces/Project"
 
 const ProjectSchema = new Schema<Partial<project>>(
   {
@@ -47,4 +47,4 @@ const ProjectSchema = new Schema<Partial<project>>(
   }
 );
 
-module.exports = model("projects", ProjectSchema);
+export default model("projects", ProjectSchema);
