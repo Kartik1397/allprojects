@@ -4,6 +4,7 @@ import {Document} from "mongoose";
 interface IUser extends Document {
   uname:String,
   email:String,
+  image:String,
   firstname:String,
   lastname:String,
   find_me:Partial<media>,

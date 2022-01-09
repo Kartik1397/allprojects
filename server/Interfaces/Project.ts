@@ -13,4 +13,4 @@ interface project{
   present:Boolean,
   Created_at:Date
 }
-export {project}
+export default project
