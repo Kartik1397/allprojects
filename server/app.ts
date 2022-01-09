@@ -28,7 +28,7 @@ declare var process: {
   }
 }
 
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 4000;
 
 //Config for Environment variables
 dotenv.config();
@@ -38,10 +38,13 @@ InitiateMongoServer();
 
 app.use(express.json());
 //cross origin resource sharing :Set middleware
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true
-}))
+
+var whitelist = ['http://localhost:3000', 'https://allprojects.ml']
+var corsOptions = {
+  origin: ['http://localhost:3000', 'https://allprojects.ml'],
+  credentials:true
+}
+app.use(cors(corsOptions))
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 * 60 * 12 * 3, path: '/' } }))
 app.use('/user', userRoutes);
 app.use('/auth', authRoutes);

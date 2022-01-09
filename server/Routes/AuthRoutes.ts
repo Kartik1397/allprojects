@@ -42,13 +42,14 @@ declare global {
 router.get("/me", Auth, function (req: express.Request, res: express.Response) {
   console.log(req.user);
   console.log("Hi");
+
   res.status(200);
   res.json({ msg: "success", user: req.user,isAuthenticated:true });
 })
 
 //logout
 router.delete("/api/v1/logout", async function (req, res) {
-  console.log("In logout",req.cookies);
+  // console.log("In logout",req.cookies);
   try{
     req.session.destroy(() => {
       res.status(201);
@@ -67,6 +68,7 @@ router.delete("/api/v1/logout", async function (req, res) {
 router.post('/api/google', async (req: express.Request, res: express.Response) => {
   try {
     const { credential } = req.body
+    console.log("I am here",credential);
     const ticket = await client.verifyIdToken({
       idToken: credential,
       audience: process.env.CLIENT_ID
@@ -74,7 +76,8 @@ router.post('/api/google', async (req: express.Request, res: express.Response) =
     const obj: any = ticket.getPayload();
     const newUser = new User({
       uname: obj.name,
-      email: obj.email
+      email: obj.email,
+      image:obj.picture
     });
 
     const foundUser = await User.findOne({ email: obj.email });
@@ -82,11 +85,11 @@ router.post('/api/google', async (req: express.Request, res: express.Response) =
       const user = await User.create(newUser);
       req.session.user = user;
       res.status(302);
-      res.redirect('http://localhost:3000');
+      res.redirect('http://localhost:3000/dashboard');
     } else {
       req.session.user = foundUser;
       res.status(302);
-      res.redirect('http://localhost:3000');
+      res.redirect('http://localhost:3000/dashboard');
     }
   } catch (e) {
     res.status(400);

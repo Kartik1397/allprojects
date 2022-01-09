@@ -58,7 +58,7 @@ const App = () => {
       }
     }
     fetchData();
-  }, [])
+  }, [state?.isAuthenticated])
   return (
     <>
       <AuthContext.Provider value={{ state, dispatch }}>

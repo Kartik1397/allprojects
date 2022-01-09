@@ -16,6 +16,75 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { AuthContext } from '../App';
+import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import PersonIcon from '@mui/icons-material/Person';
+import AddIcon from '@mui/icons-material/Add';
+
+import { blue } from '@mui/material/colors';
+import GoogleLogin from 'react-google-login';
+import API from '../api/util';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+// const emails = ['username@gmail.com', 'user02@gmail.com'];
+
+export interface SimpleDialogProps {
+  open: boolean;
+ 
+  onClose: (value: string) => void;
+}
+
+function SimpleDialog(props: SimpleDialogProps) {
+
+  const navigate = useNavigate();
+  // const location = useLocation();
+  
+  const { onClose, open } = props;
+
+  const handleClose = () => {
+    // onClose(selectedValue);
+  };
+
+  const handleListItemClick = (value: string) => {
+    onClose(value);
+  };
+  const responseGoogle =async (response:any) => {
+    console.log(response);
+    await API.post("/auth/api/google",{credential:response?.tokenId}).then((res)=>{
+  
+    })
+    navigate('/dashboard');
+  }
+
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle>JOIN US</DialogTitle>
+      <List sx={{ pt: 0 }}>
+        <ListItem autoFocus button onClick={() => handleListItemClick('addAccount')}>
+          <ListItemAvatar>
+            <Avatar>
+              <AddIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <GoogleLogin
+    clientId="496941184973-m0q8g3uns4uo9lgll6r9mq4jfh703a6j.apps.googleusercontent.com"
+    buttonText="Login"
+    onSuccess={responseGoogle}
+
+    cookiePolicy={'single_host_origin'}
+  />
+          
+        </ListItem>
+      </List>
+    </Dialog>
+  );
+}
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -58,8 +127,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
-  const {state}:any = React.useContext(AuthContext);
+  const [open, setOpen] = React.useState(false);
+  // const [selectedValue, setSelectedValue] = React.useState(emails[1]);
+  const [refresh,setRefresh] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
+  const handleClose = (value: string) => {
+    setOpen(false);
+    // setSelectedValue(value);
+  };
+  const {state}:any = React.useContext(AuthContext);
+  console.log(state,"state in header");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -70,7 +150,10 @@ export default function PrimarySearchAppBar() {
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  
+  React.useEffect(()=>{
 
+  },[open]);
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
@@ -84,6 +167,12 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLogout = async () =>{
+    API.delete("/auth/api/v1/logout").then((res)=>{
+      console.log("Logout",res);
+      window.location.reload(); 
+    })
+  }
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -101,8 +190,9 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>{state?.user?.uname}</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
 
@@ -155,6 +245,18 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <p>LogOut</p>
+      </MenuItem>
     </Menu>
   );
 
@@ -189,7 +291,7 @@ export default function PrimarySearchAppBar() {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          {state.isAuthenticated && <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          {state.isAuthenticated ? <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="error">
                 <MailIcon />
@@ -213,9 +315,19 @@ export default function PrimarySearchAppBar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <Avatar alt="Cindy Baker" src={state?.user?.image} />
             </IconButton>
-          </Box>}
+          </Box>:(<div> <div>
+      <Button variant={"contained"} onClick={handleClickOpen}>
+       SignIn
+      </Button>
+      <SimpleDialog
+        // selectedValue={selectedValue}
+       
+        open={open}
+        onClose={handleClose}
+      />
+    </div></div>)}
           {state.isAuthenticated && <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
