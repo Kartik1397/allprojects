@@ -62,7 +62,7 @@ const App = () => {
   return (
     <>
       <AuthContext.Provider value={{ state, dispatch }}>
-        <BrowserRouter>
+        <BrowserRouter >
           <AppRoutes />
         </BrowserRouter>
       </AuthContext.Provider>

@@ -6,7 +6,7 @@ import DashBoard from '../pages/DashBoard';
 const AppRoutes:FC = () => {
     
     return (
-        <Routes>
+        <Routes >
             <Route path="/dashboard" element={<DashBoard/>} />
             <Route path="/" element={<DashBoard/>}/>
         </Routes>

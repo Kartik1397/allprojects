@@ -84,12 +84,12 @@ router.post('/api/google', async (req: express.Request, res: express.Response) =
     if (!foundUser) {
       const user = await User.create(newUser);
       req.session.user = user;
-      res.status(302);
-      res.redirect('http://localhost:3000/dashboard');
+      res.status(200);
+      res.json({data:user});
     } else {
       req.session.user = foundUser;
-      res.status(302);
-      res.redirect('http://localhost:3000/dashboard');
+      res.status(200);
+      res.json({data:foundUser});
     }
   } catch (e) {
     res.status(400);
