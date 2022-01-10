@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import * as http from 'http';
 import bodyParser from 'body-parser';
-import session from 'express-session'
+import session, { MemoryStore } from 'express-session'
 import dotenv from 'dotenv';
 import InitiateMongoServer from './config/initiateMongoServer';
 declare module 'express-session' {
@@ -14,6 +14,7 @@ declare module 'express-session' {
 //route Imports
 import userRoutes from './Routes/UserRoutes';
 import authRoutes from './Routes/AuthRoutes';
+import projectRoutes from './Routes/ProjectRoutes';
 import Auth from './MiddleWare/Auth-MiddleWare';
 
 const app: express.Application = express();
@@ -45,9 +46,13 @@ var corsOptions = {
   credentials:true
 }
 app.use(cors(corsOptions))
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 * 60 * 12 * 3, path: '/' } }))
+app.use(session(
+  { secret: "secret", store: new MemoryStore(), cookie:{maxAge: Date.now() + (30 * 86400 * 1000) 
+  }
+  }));
 app.use('/user', userRoutes);
 app.use('/auth', authRoutes);
+app.use('/project',projectRoutes);
 app.get('/', (req: express.Request, res: express.Response) => {
   res.status(200).send("server is under development ...");
 })

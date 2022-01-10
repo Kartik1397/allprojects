@@ -11,6 +11,7 @@ interface project{
   StartDate:Date,
   EndDate:Date,
   present:Boolean,
-  Created_at:Date
+  Created_at:Date,
+  Creator:String
 }
 export default project

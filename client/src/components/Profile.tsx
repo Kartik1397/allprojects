@@ -12,6 +12,7 @@ import { red } from '@mui/material/colors';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import ProjectList from './ProjectList';
+import { AuthContext } from '../App';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -21,10 +22,12 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Profile() {
+  const {state}:any = React.useContext(AuthContext);
     const [value, setValue] = React.useState('one');
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
-      };
+    };
+
   return (
     <Box sx={{ width: '100%' }}>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} paddingLeft={'3rem'}>
@@ -33,11 +36,11 @@ export default function Profile() {
            <Item>
            <CardHeader
   avatar={
-    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
+    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" src={state?.user?.image}>
+           
           </Avatar>
   }
-  title={"DPS"}
+  title={state?.user?.uname}
 />
            </Item>
            </Grid>
@@ -55,7 +58,7 @@ export default function Profile() {
         indicatorColor="secondary"
         aria-label="secondary tabs example"
       >
-        <Tab value="one" label="Projects" />
+        <Tab value="one" label="Projects"/>
         <Tab value="two" label="Connections" />
         <Tab value="three" label="Analytics" />
         <Tab value="fourth" label="EDIT" />

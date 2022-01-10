@@ -31,8 +31,9 @@ import { blue } from '@mui/material/colors';
 import GoogleLogin from 'react-google-login';
 import API from '../api/util';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-// const emails = ['username@gmail.com', 'user02@gmail.com'];
+
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -56,10 +57,13 @@ function SimpleDialog(props: SimpleDialogProps) {
   };
   const responseGoogle =async (response:any) => {
     console.log(response);
+    
     await API.post("/auth/api/google",{credential:response?.tokenId}).then((res)=>{
-  
-    })
-    navigate('/dashboard');
+      console.log(res);
+      window.location.reload();
+       toast("You are logged in");
+    });
+
   }
 
   return (
@@ -150,6 +154,9 @@ export default function PrimarySearchAppBar() {
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const handleSearchChange = (event: React.MouseEvent<HTMLElement>) =>{
+      console.log(event.currentTarget);
+  }
   
   React.useEffect(()=>{
 
@@ -195,6 +202,9 @@ export default function PrimarySearchAppBar() {
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
+  const handleChangeSearch = (event: any) =>{
+    console.log(event.target.value);
+  }
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -286,6 +296,7 @@ export default function PrimarySearchAppBar() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
+              onChange={handleChangeSearch}
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />

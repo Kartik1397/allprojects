@@ -1,6 +1,8 @@
 import {Schema,model} from "mongoose"
 import project from "../Interfaces/Project"
 
+var random = require('mongoose-simple-random');
+
 const ProjectSchema = new Schema<Partial<project>>(
   {
     Media:{
@@ -14,6 +16,9 @@ const ProjectSchema = new Schema<Partial<project>>(
 		Desc:{
        type:String,
        required:true
+    },
+    Creator:{
+      type:String
     },
 		Article:{
        type:String,
@@ -40,11 +45,15 @@ const ProjectSchema = new Schema<Partial<project>>(
     present:{
       type:Boolean
     },
-		Created_at:{
+    Created_at:{
       type:Date,
-      required:false
-    }
+      default:new Date()
+    },
   }
 );
+ProjectSchema.index({'$**': 'text'});
+
+
+ProjectSchema.plugin(random);
 
 export default model("projects", ProjectSchema);
