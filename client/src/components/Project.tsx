@@ -14,6 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Link } from 'react-router-dom';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -38,6 +39,7 @@ export default function ProjectCard(data:any) {
   };
   console.log(data);
   const {Article,
+    _id,
   Created_at,
   Creator,
   Desc,
@@ -47,7 +49,9 @@ export default function ProjectCard(data:any) {
   Title,
   Urls} = data?.data;
 
-  console.log({Article:
+  console.log({
+
+    Article:
     Created_at,
     Creator,
     Desc,
@@ -58,10 +62,10 @@ export default function ProjectCard(data:any) {
     Urls})
   return (
     <Card sx={{ maxWidth: 600 ,marginTop:"1rem"}}>
-      <CardHeader
+     <Link to={"/project/"+_id}> <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="projecttitle">
+        
           </Avatar>
         }
         action={
@@ -70,9 +74,10 @@ export default function ProjectCard(data:any) {
           </IconButton>
         }
         
-        title={Title}
+        title={(<Link to={"/project/"+_id}><div><b>{Title}</b></div></Link>)}
         subheader={new Date(Created_at).toString()}
       />
+      </Link>
       <CardMedia
         component="img"
         height="200"
