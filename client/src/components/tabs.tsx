@@ -85,7 +85,7 @@ export default function BasicTabs(props:any) {
   const [open, setOpen] = React.useState(false);
 
   const editor = React.useRef(null);
-  const [content, setContent] = React.useState("Start writing");
+  const [content, setContent] = React.useState("");
   const config = {
     readonly: false,
     height: 400
@@ -142,15 +142,15 @@ export default function BasicTabs(props:any) {
         
           toast.info('Hey your post is being processed in the background');
           setOpen(false);
-          if(project?.Title.length<3 || project?.Desc.length<10){
-                    toast.info("Please use atleast 3 characters to  create the project Title...Project Desc requires atleast 10 characters")
+          if(project?.Title.length<3 || project?.Desc.length<10 ){
+                    toast.error("Please use atleast 3 characters to  create the project Title...Project Desc requires atleast 10 characters")
                    
           }
           else{
             await API.post("/project/add",{
               Title:project?.Title,
               Desc:project?.Desc,
-              Article:project?.Article,
+              Article:content,
               Urls:{
                 github:project?.github,
                 other:project?.other
@@ -176,8 +176,10 @@ export default function BasicTabs(props:any) {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Projects" {...a11yProps(0)} />
-          <Tab label="Profile" {...a11yProps(1)} />
+          {
+            state?.isAuthenticated && <Tab label="Profile" {...a11yProps(1)} />}
           <Tab label="Analysis" {...a11yProps(2)} />
+     
         </Tabs>
       </Box>
         <ToastContainer
@@ -222,28 +224,15 @@ export default function BasicTabs(props:any) {
             onChange={handleChangeForm}
             required
           />
-           <TextField
-            autoFocus
-            margin="dense"
-            id="Desc"
-            label="Article"
-            type="text"
-            name="Article"
-            fullWidth
-            variant="standard"
-            value={project.Article}
-            onChange={handleChangeForm}
-            required
-           
-          />
+            <div>Enter customisable Article in below editor</div>
            <JoditEditor
         ref={editor}
         value={content}
         config={config}
         onBlur={handleUpdate}
+        
         onChange={(newContent) => {
-
-          console.log(newContent,"content");
+      
         }}
       />
            <TextField
@@ -316,7 +305,7 @@ export default function BasicTabs(props:any) {
         
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Profile/>
+       {state.isAuthenticated && <Profile/>}
       </TabPanel>
       <TabPanel value={value} index={2}>
         ALl the Site Analytics goes here

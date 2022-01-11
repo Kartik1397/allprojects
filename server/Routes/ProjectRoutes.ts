@@ -56,7 +56,7 @@ router.post('/id',async (req: express.Request, res: express.Response) => {
       try{
             console.log(req.body.id);
             
-            const project = await Project.findOne({id:req.body.id});
+            const project = await Project.findOne({_id:req.body.id});
            
             res.status(200).send(JSON.stringify(project));
       }catch(e){
