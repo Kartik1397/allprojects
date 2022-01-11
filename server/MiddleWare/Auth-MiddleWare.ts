@@ -4,7 +4,7 @@ import User from '../models/User';
 const app: express.Application = express();
 
 const Auth = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.log("check request",req);
+
   try {
     if (typeof req.session.user !== "undefined" || req.session.user === true) {
       req.user = req.session.user;

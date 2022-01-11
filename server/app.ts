@@ -54,9 +54,9 @@ app.use('/user', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/project',projectRoutes);
 app.get('/', (req: express.Request, res: express.Response) => {
-  res.status(200).send("server is under development ...");
+  res.status(200).send("server has been up with some updates...");
 })
 
-server.listen(port, () => {
+server.listen(port,() => {
   console.log('Server started at ' + port);
 });

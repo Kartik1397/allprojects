@@ -130,7 +130,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar(props:any) {
+  console.log(props);
   const [open, setOpen] = React.useState(false);
   // const [selectedValue, setSelectedValue] = React.useState(emails[1]);
   const [refresh,setRefresh] = React.useState(false);
@@ -202,9 +203,7 @@ export default function PrimarySearchAppBar() {
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
-  const handleChangeSearch = (event: any) =>{
-    console.log(event.target.value);
-  }
+  
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -223,26 +222,6 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -251,9 +230,10 @@ export default function PrimarySearchAppBar() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <Avatar alt="Cindy Baker" src={state?.user?.image} />
+          
         </IconButton>
-        <p>Profile</p>
+        <p>{state?.user?.uname}</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -269,20 +249,52 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
     </Menu>
   );
+  const handleChangeSearch = async (event:any) =>{
+    await props?.setSearchInput(event.target.value);
+    console.log("SEARCH INPUT",props?.searchInput);
+    if(props?.searchInput?.length===0){
+                
+      props?.setSearchResults([]);
+   }
+  }
+  const handleKeyDown =async (event:any) =>{
+          if(event.key==='Enter'  || event.keyCode===9){
+            console.log(event.target.value);
+         
+            console.log(event,"key");
+            if(props?.searchInput?.length>=3){
+              try{
+                await API.post("/project/search",{searchText:props?.searchInput}).then((res)=>{
+                  console.log(res,"responses");
+                  props?.setSearchResults(res?.data?.projects);
+                  if(res.status===200){
+                    if(res?.data?.projects?.length>=1){
+                      toast("Found "+res?.data?.projects?.length+" results for your search");
+                    }
+                  }
+                 })
+              }catch(e){
+                    toast("something went wrong with server...please try again");
+              }
+          
+           }
+           else if(props?.searchInput?.length===0){
+                
+               props?.setSearchResults([]);
+           }
+           
+          }
+          else if(props?.searchInput?.length===0){
+                
+            props?.setSearchResults([]);
+         }
+  }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box sx={{ flexGrow: 1,backgroundColor:' #1C4E80' }}>
+      <AppBar position="static" style={{backgroundColor:' #1C4E80'}}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
+       
           <Typography
             variant="h6"
             noWrap
@@ -298,6 +310,8 @@ export default function PrimarySearchAppBar() {
             <StyledInputBase
               onChange={handleChangeSearch}
               placeholder="Search…"
+              onKeyDown={handleKeyDown}
+              value={props?.searchInput}
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
@@ -313,7 +327,7 @@ export default function PrimarySearchAppBar() {
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
+              <Badge badgeContent={0} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -326,7 +340,7 @@ export default function PrimarySearchAppBar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Avatar alt="Cindy Baker" src={state?.user?.image} />
+              <Avatar alt="user" src={state?.user?.image} />
             </IconButton>
           </Box>:(<div> <div>
       <Button variant={"contained"} onClick={handleClickOpen}>
@@ -348,7 +362,7 @@ export default function PrimarySearchAppBar() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <Avatar alt="user" src={state?.user?.image} />
             </IconButton>
           </Box> }
         </Toolbar>

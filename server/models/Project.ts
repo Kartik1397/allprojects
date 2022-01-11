@@ -1,6 +1,7 @@
 import {Schema,model} from "mongoose"
 import project from "../Interfaces/Project"
 
+
 var random = require('mongoose-simple-random');
 
 const ProjectSchema = new Schema<Partial<project>>(
@@ -25,7 +26,7 @@ const ProjectSchema = new Schema<Partial<project>>(
        required:true
     },
 		Tag_ids:{
-      type:Array
+      type:Array,
     },
 		Members:{
       type:Array

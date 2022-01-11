@@ -17,7 +17,7 @@ const ProjectList = (data:any) => {
 
 
     return (
-        <Grid container spacing={2}>
+        <Grid container>
         <Grid item xs={2}>
          
         </Grid>
