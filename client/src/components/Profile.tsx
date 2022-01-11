@@ -21,12 +21,15 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function Profile() {
+export default function Profile(data:any) {
   const {state}:any = React.useContext(AuthContext);
     const [value, setValue] = React.useState('one');
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
+    React.useEffect(()=>{
+        
+    },[])
 
   return (
     <Box sx={{ width: '100%' }}>

@@ -27,12 +27,12 @@ router.get('/all',async (req: express.Request, res: express.Response) => {
     res.status(200).send(JSON.stringify(projects));
 })
 
-router.get('/search',async (req: express.Request, res: express.Response) => {
+router.post('/search',async (req: express.Request, res: express.Response) => {
      
      try{
            const { searchText } = req.body;
            const Projects =await Project.find({$text: {$search:searchText}})
-       .skip(20)
+       .skip(0)
        .limit(10);
            res.status(200).json({msg:"Successfully browsed posts",projects:Projects});
      }
@@ -50,6 +50,20 @@ router.post('/posts',Auth,async (req: express.Request, res: express.Response) =>
     res.status(400);
     res.json({msg:"something went wrong",error:e});
   }
+})
+
+router.post('/id',async (req: express.Request, res: express.Response) => {
+      try{
+            console.log(req.body.id);
+            
+            const project = await Project.findOne({id:req.body.id});
+           
+            res.status(200).send(JSON.stringify(project));
+      }catch(e){
+        res.status(400);
+        res.json({msg:"something went wrong",error:e});
+      }
+  
 })
 
 export default router;

@@ -1,4 +1,4 @@
-import { FC } from "react";
+
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 
@@ -12,14 +12,19 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }))
-const SearchList:FC = () => {
+  type Props = {
+    data?: Array<{}>
+  }
+const SearchList =  <PROPS extends Props, >({ data, ...rest }: PROPS): JSX.Element  => {
 
-
+    console.log(data?.length,"size");
     return (
         <Grid container>
-            <Grid item lg={12} style={{borderRight:"1px solid orange"}}>
-                <Item><div>Results</div></Item>
-               <SearchProjectCard/>
+            <Grid item lg={12}>
+                <Item><div>Search Results:<b>Found:</b> {data?.length}</div></Item>
+               {  data?.map((item:any,idx:any)=>{
+                   return <SearchProjectCard key={idx} data={item}/>
+               })}
             </Grid>
         </Grid>
     );

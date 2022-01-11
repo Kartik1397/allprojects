@@ -57,7 +57,7 @@ export default function ProjectCard(data:any) {
     Title,
     Urls})
   return (
-    <Card sx={{ maxWidth: 800 ,marginTop:"1rem"}}>
+    <Card sx={{ maxWidth: 600 ,marginTop:"1rem"}}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -69,12 +69,13 @@ export default function ProjectCard(data:any) {
             <MoreVertIcon />
           </IconButton>
         }
+        
         title={Title}
         subheader={new Date(Created_at).toString()}
       />
       <CardMedia
         component="img"
-        height="300"
+        height="200"
         image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3RmFcscfG5DI31LL8I7uS5vn7F2UF0e0k4A&usqp=CAU"
         alt="Paella dish"
       />

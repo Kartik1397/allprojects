@@ -1,9 +1,15 @@
 import { FC } from 'react';
-import Header from "../../components/SearchInput";
+import Header from "../../components/Header";
 
 const Profile:FC = () => {
     return (
-        <Header />
+        <>
+             <Header />
+             <div>Profile</div>
+        </>
+        
+      
+        
     );
 }
 

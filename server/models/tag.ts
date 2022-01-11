@@ -9,9 +9,6 @@ const TagSchema = new Schema<Partial<tag>>(
     color:{
       type:String
     },
-    Projects:{
-      type:Array
-    }
   }
 );
 

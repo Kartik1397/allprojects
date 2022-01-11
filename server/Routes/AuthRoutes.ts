@@ -40,7 +40,7 @@ declare global {
 // })
 //get me 
 router.get("/me", Auth, function (req: express.Request, res: express.Response) {
-  console.log(req.user);
+  
   console.log("Hi");
 
   res.status(200);

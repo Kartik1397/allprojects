@@ -20,7 +20,6 @@ import JoditEditor from "jodit-react";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Tags from './Tags';
 import SearchList from './SearchProjectCardList';
 
 
@@ -60,7 +59,8 @@ function a11yProps(index: number) {
   };
 }
 
-export default function BasicTabs() {
+export default function BasicTabs(props:any) {
+  console.log(props?.searchResults,"props tab");
   const [value, setValue] = React.useState(0);
   const {state}:any = React.useContext(AuthContext);
 
@@ -116,8 +116,14 @@ export default function BasicTabs() {
              if(res.status===200){
               console.log("success",res?.data);
               setProjects(res?.data);
-              toast("yeah we got Projects at our end");
+              toast.success('Hey we got awesome collection of projects for you');
+              
              }
+             else{
+              toast.info('Hey please login to see all the projects');
+             }
+          }).catch((e)=>{
+            toast.info('Hey please login to see all the projects');
           })
     }
     fetchData();
@@ -133,23 +139,31 @@ export default function BasicTabs() {
   const handleSubmitProject = async (e: React.SyntheticEvent) =>{
         await  e.preventDefault();
           //handle Validations here in the future
-          await toast("Hey your post is being processed in the background");
+        
+          toast.info('Hey your post is being processed in the background');
           setOpen(false);
-
-          await API.post("/project/add",{
-               Title:project?.Title,
-               Desc:project?.Desc,
-               Article:project?.Article,
-               Urls:{
-                 github:project?.github,
-                 other:project?.other
-               },
-               Creator:state?.user?._id,
-               Members:[state?.user?._id]
-          }).then((res)=>{
-            console.log(res);
-            toast(res.data.msg);
-          })
+          if(project?.Title.length<3 || project?.Desc.length<10){
+                    toast.info("Please use atleast 3 characters to  create the project Title...Project Desc requires atleast 10 characters")
+                   
+          }
+          else{
+            await API.post("/project/add",{
+              Title:project?.Title,
+              Desc:project?.Desc,
+              Article:project?.Article,
+              Urls:{
+                github:project?.github,
+                other:project?.other
+              },
+              Creator:state?.user?._id,
+              Members:[state?.user?._id]
+           }).then((res)=>{
+           console.log(res);
+           // toast(res.data.msg);
+           toast.info(res.data.msg);
+           })
+          }
+       
       
 
        
@@ -158,7 +172,7 @@ export default function BasicTabs() {
   //for Tags 
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%' ,backgroundColor:'#F1F1F1',minHeight:"100vh"}}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Projects" {...a11yProps(0)} />
@@ -166,18 +180,29 @@ export default function BasicTabs() {
           <Tab label="Analysis" {...a11yProps(2)} />
         </Tabs>
       </Box>
-      <ToastContainer />
+        <ToastContainer
+        position="top-right"
+        theme='dark'
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />
       
       <TabPanel value={value} index={0}>
       <Grid container spacing={2}>
-        <Grid item lg={2}>
-           <SearchList/>
+        <Grid item lg={3}>
+          {props && props?.searchResults &&  <SearchList data={props?.searchResults}/>}
         </Grid>
-        <Grid item lg={8}>
+        {state.isAuthenticated && <Grid item lg={9}>
         <Box sx={{ borderBottom: 1}}>
-        <Button variant="contained" color="success" onClick={handleNewProject}>
+      <Button variant="contained" style={{backgroundColor:"#1C4E80",color:"white"}} onClick={handleNewProject}>
               Add Project
-         </Button>
+         </Button> 
          <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add Project Content</DialogTitle>
         <DialogContent>
@@ -235,7 +260,7 @@ export default function BasicTabs() {
             required
            
           />
-           <Tags></Tags>
+           
           <div>Urls</div>
           <TextField
             autoFocus
@@ -275,14 +300,19 @@ export default function BasicTabs() {
  
         </Box>
     
-        </Grid>
-        <Grid item lg={2}>
-          plane area
-        </Grid>
-        
+        </Grid>}
+       
       </Grid>
 
-       
+      {!state.isAuthenticated &&
+            <Grid item lg={9}>
+              <h1>Welcome to Allprojects</h1>
+              <div>Signin and connect with us to explore projects and create the projects and make it shareable across the globe </div>
+            </Grid>
+    }
+        
+     
+      
         
       </TabPanel>
       <TabPanel value={value} index={1}>
