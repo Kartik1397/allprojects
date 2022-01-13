@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 .MainLogo {
+    width: 20vw;
     font-family: 'Bebas Neue', cursive;
     font-size: var(--size-7);
 }

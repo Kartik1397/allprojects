@@ -1,41 +1,35 @@
-import { FC } from "react";
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
+import { useState, useEffect } from "react";
 import ProjectCard from "./Project";
 import API from "../api/util";
 import { toast } from "react-toastify";
-const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }))
-const ProjectList = (data:any) => {
+import style from './ProjectList.module.css';
 
+const ProjectList = ({isProfilePage}: any) => {
+  const [projects, setProjects] = useState([]);
 
-    return (
-        <Grid container>
-        <Grid item xs={2}>
-         
-        </Grid>
-        <Grid item xs={8}>
-         {data && data?.projects && data?.projects.map((item: any,idx: any) =>{
-             return <ProjectCard data={item}/>  
-         }
+  useEffect(() => {
+    const fetchData = async () => {
+      const endpoint = isProfilePage ? "/project/posts/me" : "/project/posts";
+      await API.post(endpoint).then((res) => {
+        if (res.status === 200) {
+          setProjects(res?.data);
+        }
+      }).catch(() => {
+        toast.info('Hey please login to see all the projects');
+      })
+    }
+    fetchData();
+  }, [])
 
-         )}
-     
-          
-        </Grid>
-        <Grid item xs={2}>
-          
-        </Grid>
-        
-      </Grid>
-    );
+  return (
+    <div className={style.ProjectList}>
+        {
+          projects.map((item: any) => {
+            return <ProjectCard data={item} />
+          })
+        }
+    </div>
+  );
 }
 
 export default ProjectList;

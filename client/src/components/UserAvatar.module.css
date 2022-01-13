@@ -1,0 +1,17 @@
+.UserAvatar {
+    display: flex;
+    align-items: center;
+}
+
+.UserAvatar img {
+    border-radius: 100px;
+    hight: 40px;
+    width: 40px;
+    cursor: pointer;
+    border: 2px solid var(--gray-2);
+    margin-left: 15px;
+}
+
+.UserAvatar img:hover {
+    border: 2px solid var(--blue-5);
+}

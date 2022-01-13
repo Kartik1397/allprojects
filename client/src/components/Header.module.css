@@ -3,4 +3,28 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+    .header {
+        padding: 20px;
+    } 
+    .header > :nth-child(1) {
+        order: 1;
+        width: auto;
+    }
+    .header > :nth-child(2) {
+        width: 100%;
+        order: 3;
+        flex: 1 0 100%;
+        margin: 10px 0;
+    }
+    .header > :nth-child(2) > * {
+        width: 100%;
+    }
+    .header > :nth-child(3) {
+        order: 2;
+        width: auto;
+    }
 }
