@@ -2,6 +2,7 @@ import { FC, useContext } from "react";
 import style from "./SearchInput.module.css";
 import API from "../api/util";
 import { SearchResultContext } from '../pages/Home';
+import { toast, ToastContainer } from "react-toastify";
 
 const SearchInput: FC = () => {
     const { dispatch }: any = useContext(SearchResultContext);
@@ -15,9 +16,9 @@ const SearchInput: FC = () => {
                             await API.post("/project/search", { searchText: (e.target as HTMLInputElement)?.value }).then((res) => {
                                 dispatch({type: 'UPDATE', payload: res?.data?.projects})
                                 if (res.status === 200) {
-                                    // if (res?.data?.projects?.length >= 1) {
-                                    //     toast("Found " + res?.data?.projects?.length + " results for your search");
-                                    // }
+                                    if (res?.data?.projects?.length >= 1) {
+                                        toast("Found " + res?.data?.projects?.length + " results for your search");
+                                    }
                                 }
                             })
                         } catch (e) {
@@ -28,6 +29,18 @@ const SearchInput: FC = () => {
                 id="search"
                 placeholder="Search"
             />
+            {/* <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          theme="dark"
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          /> */}
         </div>
     );
 }

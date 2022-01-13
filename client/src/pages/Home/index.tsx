@@ -4,11 +4,12 @@ import Header from "../../components/Header";
 import ProjectList from '../../components/ProjectList';
 import JoditEditor from 'jodit-react';
 import API from '../../api/util';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CreatableSelect from 'react-select/creatable';
 import { AuthContext } from '../../App';
 import SearchResult from '../../components/SearchResult';
+import SearchList from '../../components/SearchProjectCardList';
 
 const tags = [
     {
@@ -137,6 +138,10 @@ const Home: FC = () => {
             Tags: selectedTags.map((tag: any) => tag?.value),
             Members: []
         };
+        if(project?.Title.length<=3 || project.Article.length<=4){
+            toast.info("We suggest :Atleast add 4 charaters in title and article");
+        }else{
+            toast.info("your post is being processed in background");
         await API.post("/project/add", {
             Title: project?.Title,
             Desc: project?.Desc,
@@ -149,8 +154,13 @@ const Home: FC = () => {
             Creator: state?.user?._id,
             Members: [state?.user?._id]
         }).then((res: any) => {
-            toast.info(res.data.msg);
+            if(res.status===200){
+                toast.info(res.data.msg);
+                toast.info("your post has been created successfully");
+            }
+           
         })
+    }
         setShowNewProjectModal(false);
     }
 
@@ -158,11 +168,24 @@ const Home: FC = () => {
         <>
             <SearchResultContext.Provider value={{ searchResults, dispatch }}>
                 <Header />
-                <div style={{maxWidth: "60ch", fontSize: "1.25rem", margin: "10px auto", padding: "0 20px"}}>
+                <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          theme="dark"
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          />
+                {state.isAuthenticated && <div style={{maxWidth: "60ch", fontSize: "1.25rem", margin: "10px auto", padding: "0 20px"}}>
                 <Button variant="contained" style={{ backgroundColor: "#1C4E80", color: "white" }} onClick={() => setShowNewProjectModal(true)}>
                     Add Project
                 </Button>
                 </div>
+                }
                 {
                     showNewProjectModal && (
                         <Dialog open={showNewProjectModal} onClose={() => setShowNewProjectModal(false)}>
