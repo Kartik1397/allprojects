@@ -5,7 +5,7 @@ interface project{
   Title:String,
   Desc:String,
   Article:String,
-  Tag_ids:Array<tag>,
+  Tags:Array<String>,
   Members:Array<String>,
   Urls:Partial<projecturl>,
   Likes:Array<String>,

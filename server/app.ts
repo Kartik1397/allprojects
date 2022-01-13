@@ -21,6 +21,8 @@ const app: express.Application = express();
 const server: http.Server = http.createServer(app);
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 
 declare var process: {
   env: {

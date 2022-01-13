@@ -1,5 +1,8 @@
 .SignIn {
+    width: 20vw;
     font-size: var(--font-size-1);
+    display: flex;
+    justify-content: end;
 }
 
 .SignIn .Button {

@@ -25,7 +25,7 @@ const ProjectSchema = new Schema<Partial<project>>(
        type:String,
        required:true
     },
-		Tag_ids:{
+		Tags:{
       type:Array,
     },
 		Members:{

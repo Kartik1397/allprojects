@@ -4,43 +4,38 @@ import { useParams } from 'react-router-dom';
 import API from '../../api/util';
 import Header from "../../components/Header";
 import ProjectCard from '../../components/Project';
-import ProjectList from '../../components/ProjectList';
 
-const ProjectLink:FC = () => {
-    const {id} = useParams();
-    const [project,setProject] = useState({});
+const ProjectLink: FC = () => {
+    const { id } = useParams();
+    const [project, setProject] = useState({});
     console.log(id);
-    useEffect(()=>{
-           const fetchData = async  () => {
-              await API.post("/project/id",{id:id}).then((res)=>{
-                  console.log(res);
-                  if(res.status===200){
-                      setProject(res?.data);
-                  }
-              })
-
-           }
-           fetchData()
-    },[])
+    useEffect(() => {
+        const fetchData = async () => {
+            await API.post("/project/id", { id: id }).then((res) => {
+                console.log(res);
+                if (res.status === 200) {
+                    setProject(res?.data);
+                }
+            })
+        }
+        fetchData()
+    }, [])
     return (
         <>
-        {id && 
-        <>
-          <Header />
-        
-             {project && <Grid container spacing={2}>
-                 <Grid lg={3}>
+            {id &&
+                <>
+                    <Header />
+                    {project && <Grid container spacing={2}>
+                        <Grid lg={3}>
 
-                 </Grid>
-                 <Grid lg={9} style={{marginTop:"1rem"}} >
-                 <ProjectCard data={project}/>
-                 </Grid>
-             </Grid>
-}
-        </>}
-           
+                        </Grid>
+                        <Grid lg={9} style={{ marginTop: "1rem" }} >
+                            <ProjectCard data={project} />
+                        </Grid>
+                    </Grid>
+                    }
+                </>}
         </>
-        
     );
 }
 
