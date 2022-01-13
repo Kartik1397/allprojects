@@ -14,7 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-
+import { Link } from 'react-router-dom';
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
@@ -30,49 +30,40 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function ProjectCard(data:any) {
+export default function ProjectCard({ data }: any) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log(data);
-  const {Article,
-  Created_at,
-  Creator,
-  Desc,
-  Likes,
-  Members,
-  Tag_ids,
-  Title,
-  Urls} = data?.data;
 
-  console.log({Article:
+  const {
+    Article,
     Created_at,
-    Creator,
+    _id,
     Desc,
-    Likes,
-    Members,
-    Tag_ids,
     Title,
-    Urls})
+    Tags
+  } = data;
   return (
-    <Card sx={{ maxWidth: 600 ,marginTop:"1rem"}}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        
-        title={Title}
-        subheader={new Date(Created_at).toString()}
-      />
+    <Card sx={{ maxWidth: "60ch", marginTop: "1rem", fontSize: '1.25rem' }}>
+      <Link to={"/project/" + _id}>
+        <CardHeader
+          avatar={
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+              R
+            </Avatar>
+          }
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+
+          title={Title}
+          subheader={new Date(Created_at).toString()}
+        />
+      </Link>
       <CardMedia
         component="img"
         height="200"
@@ -81,9 +72,10 @@ export default function ProjectCard(data:any) {
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
+          {Tags?.join(", ")}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {Desc}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -106,9 +98,8 @@ export default function ProjectCard(data:any) {
         <CardContent>
           <Typography paragraph>Describe:</Typography>
           <Typography paragraph>
-            {Desc}
+            {<div dangerouslySetInnerHTML={{ __html: Article }}></div>}
           </Typography>
-         
         </CardContent>
       </Collapse>
     </Card>

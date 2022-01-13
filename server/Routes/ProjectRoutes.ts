@@ -40,9 +40,22 @@ router.post('/search',async (req: express.Request, res: express.Response) => {
        res.status(400).json({msg:"No Posts matching your search query"});
      }
 })
-router.post('/posts',Auth,async (req: express.Request, res: express.Response) => {
+
+router.post('/posts',async (req: express.Request, res: express.Response) => {
   try{
-    const projects = await Project.find({}).limit(5);
+    const projects = await Project.find({}).limit(50);
+    console.log(projects);
+    res.status(200);
+    res.status(200).send(JSON.stringify(projects));
+  }catch(e){
+    res.status(400);
+    res.json({msg:"something went wrong",error:e});
+  }
+})
+
+router.post('/posts/me',Auth,async (req: express.Request, res: express.Response) => {
+  try{
+    const projects = await Project.find({Members: {$in: [req.user._id]}}).limit(50);
     console.log(projects);
     res.status(200);
     res.status(200).send(JSON.stringify(projects));
@@ -56,7 +69,7 @@ router.post('/id',async (req: express.Request, res: express.Response) => {
       try{
             console.log(req.body.id);
             
-            const project = await Project.findOne({id:req.body.id});
+            const project = await Project.findOne({_id:req.body.id});
            
             res.status(200).send(JSON.stringify(project));
       }catch(e){

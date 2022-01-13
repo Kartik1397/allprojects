@@ -1,15 +1,13 @@
 import { FC } from 'react';
 import Header from "../../components/Header";
+import ProjectList from "../../components/ProjectList";
 
 const Profile:FC = () => {
     return (
         <>
-             <Header />
-             <div>Profile</div>
+            <Header />
+            <ProjectList isProfilePage />
         </>
-        
-      
-        
     );
 }
 
