@@ -11,7 +11,7 @@
 
 ### ✨ [Demo](http://allprojects.ml)
 
-## Install
+## Clone
 
 ```sh
 git clone https://github.com/Kartik1397/allprojects.git
