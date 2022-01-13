@@ -1,4 +1,4 @@
-import { Button, DialogTitle, Dialog, DialogContentText, DialogContent, TextField, DialogActions } from '@mui/material';
+import { Button, DialogTitle, Dialog, DialogContentText, DialogContent, TextField, DialogActions, Grid } from '@mui/material';
 import { FC, useRef, useState, useContext, createContext, useReducer } from 'react';
 import Header from "../../components/Header";
 import ProjectList from '../../components/ProjectList';
@@ -160,7 +160,7 @@ const Home: FC = () => {
             }
            
         })
-    }
+     }
         setShowNewProjectModal(false);
     }
 
@@ -259,7 +259,11 @@ const Home: FC = () => {
                     )
                 }
                 <SearchResult />
+              
+                 
                 <ProjectList />
+         
+               
             </SearchResultContext.Provider>
         </>
     );

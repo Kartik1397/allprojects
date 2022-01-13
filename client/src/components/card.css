@@ -1,0 +1,8 @@
+.MuiCard-root{
+     width:500px;
+}
+@media only screen and (max-width: 500px) {
+    .MuiCard-root{
+       width:320px;
+    }
+  }
