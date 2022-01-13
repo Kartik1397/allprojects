@@ -48,7 +48,8 @@ export default function ProjectCard({ data }: any) {
     _id,
     Desc,
     Title,
-    Tags
+    Tags,
+    Urls
   } = data;
   const tagClick = async (search:String) =>{
     window.scrollTo({top: 0, behavior: 'smooth'});
@@ -101,14 +102,24 @@ export default function ProjectCard({ data }: any) {
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {Desc}
+        
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+         {
+           Urls && Urls?.github && (
+             /^https?:\/\//.test(Urls.github)
+            ? <a href={Urls?.github} target="_blank" rel="noopener noreferrer">
+              <img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" alt="github" height="45" width="45"/> <b>git</b>
+            </a>
+            : <Link to={Urls?.github} target="_blank" rel="noopener noreferrer" ><img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" alt="github" height="45" width="45"/><b style={{fontSize:"10px"}}>git</b></Link>
+            
+           )
+           }
         </IconButton>
         <IconButton aria-label="share">
-          <ShareIcon />
+          {/* <ShareIcon /> */}
         </IconButton>
         <ExpandMore
           expand={expanded}
