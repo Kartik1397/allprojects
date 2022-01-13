@@ -15,10 +15,11 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Link } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, useMediaQuery } from '@mui/material';
 import { reducer, SearchResultContext } from '../pages/Home';
 import API from '../api/util';
 import { toast, ToastContainer } from 'react-toastify';
+import "./card.css";
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
@@ -66,8 +67,9 @@ export default function ProjectCard({ data }: any) {
       console.log(e);
     }
 }
+
   return (
-    <Card sx={{ width:"450px", marginTop: "1rem", fontSize: '1.25rem' }}>
+    <Card sx={{  minWidth: 250, margin:"1rem 1rem" ,fontSize: '1.25rem' }}>
       <Link to={"/project/" + _id}>
         <CardHeader
           avatar={

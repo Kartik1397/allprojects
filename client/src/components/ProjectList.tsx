@@ -23,8 +23,8 @@ const ProjectList = ({isProfilePage}: any) => {
   return (
     <div className={style.ProjectList}>
         {
-          projects.map((item: any) => {
-            return <ProjectCard data={item} />
+          projects.map((item: any,idx) => {
+            return <ProjectCard key={idx} data={item} />
           })
         }
         <>
