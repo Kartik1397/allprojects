@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ProjectCard from "./Project";
 import API from "../api/util";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import style from './ProjectList.module.css';
 
 const ProjectList = ({isProfilePage}: any) => {
@@ -15,12 +15,11 @@ const ProjectList = ({isProfilePage}: any) => {
           setProjects(res?.data);
         }
       }).catch(() => {
-        toast.info('Hey please login to see all the projects');
+        toast.info('Hey please login to create your customisable project');
       })
     }
     fetchData();
   }, [])
-
   return (
     <div className={style.ProjectList}>
         {
@@ -28,6 +27,20 @@ const ProjectList = ({isProfilePage}: any) => {
             return <ProjectCard data={item} />
           })
         }
+        <>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          theme="dark"
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          />
+        </>
     </div>
   );
 }

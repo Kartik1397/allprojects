@@ -15,6 +15,10 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { reducer, SearchResultContext } from '../pages/Home';
+import API from '../api/util';
+import { toast, ToastContainer } from 'react-toastify';
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
@@ -32,7 +36,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function ProjectCard({ data }: any) {
   const [expanded, setExpanded] = React.useState(false);
-
+  const {dispatch}:any = React.useContext(SearchResultContext);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -45,8 +49,25 @@ export default function ProjectCard({ data }: any) {
     Title,
     Tags
   } = data;
+  const tagClick = async (search:String) =>{
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    try{
+      await API.post("/project/search", { searchText:search }).then((res) => {
+        console.log(res,"in tag");
+        dispatch({type: 'UPDATE', payload: res?.data?.projects})
+        if (res.status === 200) {
+            if (res?.data?.projects?.length >= 1) {
+              
+            }
+        }
+
+      })
+    }catch(e){
+      console.log(e);
+    }
+}
   return (
-    <Card sx={{ maxWidth: "60ch", marginTop: "1rem", fontSize: '1.25rem' }}>
+    <Card sx={{ width:"450px", marginTop: "1rem", fontSize: '1.25rem' }}>
       <Link to={"/project/" + _id}>
         <CardHeader
           avatar={
@@ -67,12 +88,14 @@ export default function ProjectCard({ data }: any) {
       <CardMedia
         component="img"
         height="200"
-        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3RmFcscfG5DI31LL8I7uS5vn7F2UF0e0k4A&usqp=CAU"
+        image={"https://source.unsplash.com/random/900×700/?"+(Tags && (Tags.length>=1?Tags[Math.floor((Math.random() * (Tags.length-1)) + 1)]  :"computer"))}
         alt="Paella dish"
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {Tags?.join(", ")}
+          {Tags && Tags?.map((item:any)=>{
+            return <Button onClick={()=>{tagClick(item)}} color="secondary">{`#`+item}</Button>
+          })}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {Desc}

@@ -13,7 +13,7 @@ const SearchProjectCard = <PROPS extends Partial<Props>,>({ data, ...rest }: PRO
   console.log("inside pcard", data);
 
   return (
-    <Box sx={{ minWidth: 275, marginTop: "1rem", borderRadius: "14px" }}>
+    <Box sx={{ minWidth: 200, marginTop: "1rem", borderRadius: "14px" }}>
       <Card variant="outlined"><React.Fragment>
         <CardContent>
           <Typography variant="h4" component="div" style={{ color: "#1C4E80" }}>
